@@ -476,6 +476,80 @@
             color: #8B7355;
         }
 
+            /* Modal Styles */
+            .modal {
+                        display: none;
+                        position: fixed;
+                        z-index: 2000;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0,0,0,0.9);
+                        overflow-y: auto;
+                    }
+
+            .modal-content {
+                        background: #F5F5F0;
+                        margin: 3% auto;
+                        padding: 60px;
+                        max-width: 1400px;
+                        border-radius: 8px;
+                        position: relative;
+                    }
+
+            .modal-close {
+                        position: absolute;
+                        top: 20px;
+                        right: 30px;
+                        font-size: 40px;
+                        color: #2C2C2C;
+                        cursor: pointer;
+                        transition: color 0.3s;
+                    }
+
+            .modal-content {
+                        background: #F5F5F0;
+                        margin: 3% auto;
+                        padding: 60px;
+                        max-width: 1400px;
+                        border-radius: 8px;
+                        position: relative;
+                    }
+
+            .modal-close {
+                        position: absolute;
+                        top: 20px;
+                        right: 30px;
+                        font-size: 40px;
+                        color: #2C2C2C;
+                        cursor: pointer;
+                        transition: color 0.3s;
+                    }
+
+            .modal-close:hover {
+                        color: #8B7355;
+                    }
+
+            .modal-gallery {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                        gap: 30px;
+                        margin-top: 40px;
+                    }
+
+            .modal-gallery img {
+                        width: 100%;
+                        height: auto;
+                        border-radius: 4px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                        transition: transform 0.3s;
+                    }
+
+            .modal-gallery img:hover {
+                        transform: scale(1.02);
+                    }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             nav {
@@ -712,6 +786,75 @@
                 document.getElementById('navMenu').classList.remove('active');
             });
         });
+
+            // Project Modal Functionality
+            const projectData = {
+                        'semester-7': {
+                                        title: 'Semester 7 - Kystbrinken',
+                                        images: [
+                                                            'projekter-billeder/7-semester/7.semestertegninger_Side_01.png',
+                                                            'projekter-billeder/7-semester/7.semestertegninger_Side_02.png',
+                                                            'projekter-billeder/7-semester/7.semestertegninger_Side_03.png',
+                                                            'projekter-billeder/7-semester/7.semestertegninger_Side_04.png',
+                                                            'projekter-billeder/7-semester/7.semestertegninger_Side_05.png',
+                                                            'projekter-billeder/7-semester/7.semestertegninger_Side_06.png',
+                                                            'projekter-billeder/7-semester/7.semestertegninger_Side_07.png',
+                                                            'projekter-billeder/7-semester/7.semestertegninger_Side_08.png'
+                                                        ]
+                                                    }
+                                };
+
+            function openProjectModal(projectId) {
+                        const project = projectData[projectId];
+                        if (!project) return;
+
+                        const modal = document.getElementById('projectModal');
+                        const modalTitle = document.getElementById('modal-title');
+                        const modalGallery = document.getElementById('modal-gallery');
+
+                        modalTitle.textContent = project.title;
+                        modalGallery.innerHTML = '';
+
+                        project.images.forEach(imagePath => {
+                                        const img = document.createElement('img');
+                                        img.src = imagePath;
+                                        img.alt = project.title;
+                                        modalGallery.appendChild(img);
+                                    });
+
+                        modal.style.display = 'block';
+                    }
+
+            const modal = document.getElementById('projectModal');
+            const closeBtn = document.querySelector('.modal-close');
+
+            closeBtn.onclick = function() {
+                        modal.style.display = 'none';
+                    };
+
+            window.onclick = function(event) {
+                        if (event.target == modal) {
+                                        modal.style.display = 'none';
+                                    }
+                    };
+
+            // Add click events to project cards
+            document.querySelectorAll('.project-card').forEach((card, index) => {
+                        card.onclick = function() {
+                                        if (index === 1) { // Semester 7 projekt (andet kort)
+                                                            openProjectModal('semester-7');
+                                                        }
+                                    };
+                    });
     </script>
 </body>
+
+        <!-- Modal for Project Gallery -->
+        <div id="projectModal" class="modal">
+                    <div class="modal-content">
+                                    <span class="modal-close">&times;</span>
+                                    <h2 id="modal-title"></h2>
+                                    <div class="modal-gallery" id="modal-gallery"></div>
+                                </div>
+                </div>
 </html>
